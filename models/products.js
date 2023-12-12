@@ -46,5 +46,20 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
     },
   });
+
+  Products.beforeCreate(async (u) => {
+    u.dataValues.createdAt = moment().unix();
+    u.dataValues.updatedAt = moment().unix();
+  });
+  Products.beforeUpdate(async (u) => {
+    u.dataValues.updatedAt = moment().unix();
+  });
+
+  Products.beforeBulkCreate(async (allProducts) => {
+    allProducts.forEach((product) => {
+      product.dataValues.createdAt = moment().unix();
+    });
+  });
+
   return Products;
 };
