@@ -31,7 +31,7 @@ var config = convict({
     port: {
       doc: "Database port",
       format: String,
-      default: "5432",
+      default: "3306",
       env: "DATABASE_PORT",
     },
     name: {
@@ -53,7 +53,6 @@ var config = convict({
       env: "DATABASE_PASSWORD",
     },
   },
-  
 });
 
 // Load environment dependent configuration
