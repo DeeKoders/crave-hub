@@ -10,29 +10,29 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     price: {
-      type: DataTypes.STRING,
-      allowNull: FLOAT,
+      type: DataTypes.FLOAT,
+      allowNull: false,
     },
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    fk_vendor_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "vendors",
-        key: "id",
-      },
-    },
-    fk_category_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "categories",
-        key: "id",
-      },
-    },
+    // fk_vendor_id: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    //   references: {
+    //     model: "vendors",
+    //     key: "id",
+    //   },
+    // },
+    // fk_category_id: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    //   references: {
+    //     model: "categories",
+    //     key: "id",
+    //   },
+    // },
     createdAt: {
       allowNull: false,
       type: DataTypes.INTEGER,
