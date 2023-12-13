@@ -21,22 +21,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    // fk_vendor_id: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    //   references: {
-    //     model: "vendors",
-    //     key: "id",
-    //   },
-    // },
-    // fk_category_id: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    //   references: {
-    //     model: "categories",
-    //     key: "id",
-    //   },
-    // },
+    fk_vendor_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "vendors",
+        key: "id",
+      },
+    },
+    fk_category_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "categories",
+        key: "id",
+      },
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.INTEGER,
@@ -46,6 +46,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
     },
   });
+
+  Products.associate = (models) => {
+    Products.belongsTo(models.Categories, {
+      as: "category",
+      foreignKey: "fk_category_id",
+      targetKey: "id",
+    });
+    Products.belongsTo(models.Vendors, {
+      as: "vendor",
+      foreignKey: "fk_vendor_id",
+      targetKey: "id",
+    });
+  };
 
   Products.beforeCreate(async (u) => {
     u.dataValues.createdAt = moment().unix();
