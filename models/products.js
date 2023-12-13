@@ -58,6 +58,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "fk_vendor_id",
       targetKey: "id",
     });
+    Products.belongsTo(models.OrderItems, {
+      as: "orderItem",
+      foreignKey: "fk_product_id",
+      targetKey: "id",
+    });
   };
 
   Products.beforeCreate(async (u) => {
