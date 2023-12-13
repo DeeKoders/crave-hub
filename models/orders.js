@@ -1,25 +1,25 @@
 module.exports = (sequelize, DataTypes) => {
-  const Users = sequelize.define("users", {
+  const Orders = sequelize.define("orders", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    first_name: {
-      type: DataTypes.STRING,
+    date: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    last_name: {
-      type: DataTypes.STRING,
+    total: {
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
-    mobile_number: {
-      type: DataTypes.STRING,
+    fk_user_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-    },
-    role: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      references: {
+        model: "users",
+        key: "id",
+      },
     },
     createdAt: {
       allowNull: false,
@@ -31,24 +31,24 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  Users.associate = (models) => {
-    Users.hasMany(models.Orders, {
-      as: "orders",
+  Orders.associate = (models) => {
+    Orders.belongsTo(models.Users, {
+      as: "user",
       foreignKey: "fk_user_id",
     });
   };
 
-  Users.beforeCreate(async (u) => {
+  Orders.beforeCreate(async (u) => {
     u.dataValues.createdAt = moment().unix();
     u.dataValues.updatedAt = moment().unix();
   });
-  Users.beforeUpdate(async (u) => {
+  Orders.beforeUpdate(async (u) => {
     u.dataValues.updatedAt = moment().unix();
   });
 
-  Users.beforeBulkCreate(async (allUsers) => {
-    allUsers.forEach((user) => {
-      user.dataValues.createdAt = moment().unix();
+  Orders.beforeBulkCreate(async (allOrders) => {
+    allOrders.forEach((order) => {
+      order.dataValues.createdAt = moment().unix();
     });
   });
 
