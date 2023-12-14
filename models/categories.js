@@ -1,3 +1,4 @@
+const moment = require("moment");
 module.exports = (sequelize, DataTypes) => {
   const Categories = sequelize.define("categories", {
     id: {

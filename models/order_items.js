@@ -1,3 +1,4 @@
+const moment = require("moment");
 module.exports = (sequelize, DataTypes) => {
   const OrderItems = sequelize.define("order_items", {
     id: {
@@ -46,9 +47,10 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
   OrderItems.associate = (models) => {
-    OrderItems.hasOne(models.Products, {
+    OrderItems.belongsTo(models.Products, {
       as: "product",
       foreignKey: "fk_product_id",
+      sourceKey: "id",
     });
   };
 
