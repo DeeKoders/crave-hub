@@ -2,9 +2,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const expressLogger = require("express-bunyan-logger");
 const router = require("./routes");
-
+const fileUpload = require("express-fileupload");
 const app = express();
 
+app.use(fileUpload());
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(
   bodyParser.urlencoded({
