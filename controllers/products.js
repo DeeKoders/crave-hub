@@ -1,24 +1,28 @@
-const { Products, Vendors, Categories } = require("../models");
-const { isArray } = require("lodash");
+const { isArray, isEmpty } = require("lodash");
+const productsService = require("../services/products");
 
 module.exports = {
-  getAllProducts: async (req, res) => {
+  getAllProducts: async (_, res) => {
     try {
-      const response = await Products.findAll({
-        include: [
-          {
-            model: Vendors,
-            as: "vendor",
-          },
-          {
-            model: Categories,
-            as: "category",
-          },
-        ],
-        logging: console.log,
-      });
-      res.send(response);
+      const products = await productsService.fetchAllProducts();
+
+      res.send(products);
     } catch (error) {
+      console.error("Error occured in getAllProducts: ", error);
+      res.send(error);
+    }
+  },
+  getProductDetail: async (req, res) => {
+    try {
+      const { product_id } = req.params;
+
+      const product = await productsService.fetchSingleProduct({
+        productId: product_id,
+      });
+
+      res.send(product);
+    } catch (error) {
+      console.error("Error occured in getProductDetail: ", error);
       res.send({ error });
     }
   },
@@ -26,24 +30,23 @@ module.exports = {
     try {
       const files = isArray(req.files.data) ? req.files.data : [req.files.data];
 
-      const uploadResults = await Products.uploadProductImages(files);
+      const uploadResults = await productsService.uploadImages({ files });
+      let image_url = [];
 
-      const image_url = uploadResults.map((file) => file.Location);
+      if (!isEmpty(uploadResults)) {
+        image_url = uploadResults.map((file) => file.Location);
+      }
 
-      const { name, quantity, price, fk_vendor_id, fk_category_id } = req.body;
+      const productDetails = {
+        ...req.body,
+        image_url,
+      };
 
-      const product = await Products.create({
-        name,
-        quantity,
-        price,
-        fk_category_id,
-        fk_vendor_id,
-        image_url: JSON.stringify(image_url),
-      });
+      const product = await productsService.addNewProduct(productDetails);
 
       res.send(product);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error occured in addProduct:", error);
       res.status(500).send(error);
     }
   },
