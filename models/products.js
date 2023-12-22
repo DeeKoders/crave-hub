@@ -1,3 +1,5 @@
+const moment = require("moment");
+
 module.exports = (sequelize, DataTypes) => {
   const Products = sequelize.define("products", {
     id: {
@@ -18,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     image_url: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     fk_vendor_id: {
@@ -58,10 +60,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "fk_vendor_id",
       targetKey: "id",
     });
-    Products.belongsTo(models.OrderItems, {
-      as: "orderItem",
+    Products.hasMany(models.OrderItems, {
       foreignKey: "fk_product_id",
-      targetKey: "id",
+      as: "orderItem",
     });
   };
 
