@@ -6,6 +6,7 @@ const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
 const config = require("../config");
 const { camelCase, upperFirst } = require("lodash");
+const { logInfo, logError } = require("../utils/logFunctions");
 const db = {};
 
 let sequelize = new Sequelize(
@@ -21,19 +22,17 @@ let sequelize = new Sequelize(
       min: 0,
       acquire: 120 * 1000,
     },
-    logging: () => {
-      return process.env.NODE_ENV === "test" ? false : true;
-    },
+    logging: config.get("env") === "test" ? false : (log) => console.log(log),
   }
 );
 
 sequelize
   .authenticate()
   .then(() => {
-    console.info("Connection has been established successfully.");
+    logInfo("Connection has been established successfully.");
   })
   .catch((err) => {
-    console.error("Unable to connect to the database:", err);
+    logError(`Unable to connect to the database: ${err.message}`);
   });
 
 fs.readdirSync(__dirname)

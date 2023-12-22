@@ -1,5 +1,6 @@
 const { isArray, isEmpty } = require("lodash");
 const productsService = require("../services/products");
+const { logError } = require("../utils/logFunctions");
 
 module.exports = {
   getAllProducts: async (_, res) => {
@@ -8,7 +9,7 @@ module.exports = {
 
       res.send(products);
     } catch (error) {
-      console.error("Error occured in getAllProducts: ", error);
+      logError(`Error occured in getAllProducts controller: ${error.message}`);
       res.send(error);
     }
   },
@@ -22,7 +23,9 @@ module.exports = {
 
       res.send(product);
     } catch (error) {
-      console.error("Error occured in getProductDetail: ", error);
+      logError(
+        `Error occured in getProductDetail controller: ${error.message}`
+      );
       res.send({ error });
     }
   },
@@ -46,7 +49,7 @@ module.exports = {
 
       res.send(product);
     } catch (error) {
-      console.error("Error occured in addProduct:", error);
+      logError(`Error occured in addProduct controller: ${error.message}`);
       res.status(500).send(error);
     }
   },

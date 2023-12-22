@@ -15,7 +15,6 @@ const productsService = {
           as: "category",
         },
       ],
-      logging: console.log,
     });
     return response;
   },
