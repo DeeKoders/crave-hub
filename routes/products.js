@@ -9,4 +9,6 @@ router
 
 router.route("/:product_id").get(productsController.getProductDetail);
 
+
+
 module.exports = router;
