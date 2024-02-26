@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 module.exports = (sequelize, DataTypes) => {
   const Users = sequelize.define("users", {
     id: {
@@ -11,46 +13,20 @@ module.exports = (sequelize, DataTypes) => {
     },
     last_name: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     mobile_number: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
-    role: {
+    password: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.INTEGER,
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.INTEGER,
-    },
+
   });
 
-  Users.associate = (models) => {
-    Users.hasMany(models.Orders, {
-      as: "orders",
-      foreignKey: "fk_user_id",
-    });
-  };
 
-  Users.beforeCreate(async (u) => {
-    u.dataValues.createdAt = moment().unix();
-    u.dataValues.updatedAt = moment().unix();
-  });
-  Users.beforeUpdate(async (u) => {
-    u.dataValues.updatedAt = moment().unix();
-  });
-
-  Users.beforeBulkCreate(async (allUsers) => {
-    allUsers.forEach((user) => {
-      user.dataValues.createdAt = moment().unix();
-    });
-  });
 
   return Users;
 };
